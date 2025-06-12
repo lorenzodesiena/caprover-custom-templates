@@ -1,0 +1,9 @@
+{
+  "wordpress-clients": {
+    "name": "wordpress-clients",
+    "displayName": "WordPress Clienti (128MB Upload)",
+    "description": "WordPress ottimizzato con upload 128MB, MySQL incluso, configurazioni sicurezza preimpostate",
+    "logoUrl": "https://s.w.org/about/images/logos/wordpress-logo-32.png",
+    "isOfficial": false
+  }
+}
