@@ -1,0 +1,11 @@
+<Files "list">
+    Header set Content-Type "application/json"
+</Files>
+
+<Files "*.json">
+    Header set Content-Type "application/json"
+</Files>
+
+<Files "*.yml">
+    Header set Content-Type "text/yaml"
+</Files>
