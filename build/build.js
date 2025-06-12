@@ -3,7 +3,7 @@ const path = require('path');
 
 console.log('🚀 Building CapRover One-Click Apps repository...');
 
-// Pulisci directory docs esistente (manteniamo quella vecchia)
+// Pulisci directory docs/v4 esistente
 const buildDir = 'docs';
 if (fs.existsSync(`${buildDir}/v4`)) {
     fs.rmSync(`${buildDir}/v4`, { recursive: true });
@@ -22,26 +22,29 @@ if (fs.existsSync(yamlPath)) {
     console.log('📄 Template YAML copiato');
 }
 
-// Crea file list (richiesto da CapRover)
-fs.writeFileSync(`${buildDir}/v4/list`, 'wordpress-clients\n');
-console.log('📋 File list creato');
-
-// Crea metadata JSON per le app
-const appMetadata = {
-    "wordpress-clients": {
-        "name": "wordpress-clients",
-        "displayName": "WordPress Clienti (128MB Upload)",
-        "description": "WordPress ottimizzato con upload 128MB, MySQL incluso, configurazioni sicurezza preimpostate",
-        "logoUrl": "https://s.w.org/about/images/logos/wordpress-logo-32.png",
-        "isOfficial": false
-    }
+// CORREZIONE: Crea il file list nel formato JSON che CapRover si aspetta
+const oneClickApps = {
+    "oneClickApps": [
+        {
+            "name": "wordpress-clients",
+            "displayName": "WordPress Clienti (128MB Upload)",
+            "description": "WordPress ottimizzato con upload 128MB, MySQL incluso, configurazioni sicurezza preimpostate",
+            "isOfficial": false,
+            "logoUrl": "https://s.w.org/about/images/logos/wordpress-logo-32.png"
+        }
+    ]
 };
 
-fs.writeFileSync(`${buildDir}/v4/apps.json`, JSON.stringify(appMetadata, null, 2));
-console.log('📊 Metadata JSON creato');
+// Scrive il file list in formato JSON (non più solo testo)
+fs.writeFileSync(`${buildDir}/v4/list`, JSON.stringify(oneClickApps));
+console.log('📋 File list creato in formato JSON corretto');
+
+// Mantieni anche apps.json per compatibilità
+fs.writeFileSync(`${buildDir}/v4/apps.json`, JSON.stringify(oneClickApps, null, 2));
+console.log('📊 Apps JSON creato');
 
 console.log('\n✅ Build completato con successo!');
 console.log('📁 Files generati in docs/v4/:');
-console.log('   - list');
+console.log('   - list (formato JSON per CapRover)');
 console.log('   - apps/wordpress-clients.yml');  
 console.log('   - apps.json');
