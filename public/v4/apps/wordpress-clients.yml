@@ -8,76 +8,40 @@ services:
             MYSQL_DATABASE: $$cap_mysql_db
             MYSQL_USER: $$cap_mysql_user
             MYSQL_PASSWORD: $$cap_mysql_password
-            MYSQL_CHARSET: utf8mb4
-            MYSQL_COLLATION: utf8mb4_unicode_ci
         volumes:
             - $$cap_appname-db-data:/var/lib/mysql
-        command:
-            - --default-authentication-plugin=mysql_native_password
-            - --character-set-server=utf8mb4
-            - --collation-server=utf8mb4_unicode_ci
-        healthcheck:
-            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-            timeout: 10s
-            retries: 10
-            interval: 10s
-            start_period: 30s
         caproverExtra:
-            notExposeAsWebApp: 'true'
+            notExposeAsWebApp: true
     $$cap_appname:
-        image: themirage80/wordpress-minimal:latest
+        image: wordpress:latest
         restart: always
         depends_on:
             - $$cap_appname-db
         environment:
-            WORDPRESS_DB_HOST: srv-captain--$$cap_appname-db:3306
+            WORDPRESS_DB_HOST: srv-captain--$$cap_appname-db
             WORDPRESS_DB_USER: $$cap_mysql_user
             WORDPRESS_DB_PASSWORD: $$cap_mysql_password
             WORDPRESS_DB_NAME: $$cap_mysql_db
-            WORDPRESS_TABLE_PREFIX: wp_
         volumes:
             - $$cap_appname-wp-content:/var/www/html/wp-content
         caproverExtra:
-            containerHttpPort: '80'
+            containerHttpPort: 80
 caproverOneClickApp:
     variables:
         - id: $$cap_mysql_root_password
           label: MySQL Root Password
           defaultValue: $$cap_gen_random_hex(16)
-          description: Password amministratore MySQL
         - id: $$cap_mysql_user
           label: WordPress DB User
-          defaultValue: wpuser
-          description: Username database WordPress
+          defaultValue: wordpress
         - id: $$cap_mysql_password
           label: WordPress DB Password
           defaultValue: $$cap_gen_random_hex(12)
-          description: Password database WordPress
         - id: $$cap_mysql_db
           label: WordPress Database Name
           defaultValue: wordpress
-          description: Nome database WordPress
     instructions:
-        start: |
-            🚀 WordPress Clienti Ottimizzato in installazione
-            
-            ⏳ Il database MySQL richiede 1-2 minuti per inizializzare
-            📤 Upload limite: 128MB
-            ⚡ Configurazioni PHP ottimizzate
-            🔒 Sicurezza avanzata
-        end: |
-            ✅ WordPress Clienti è ora attivo!
-            
-            🌐 Sito: http://$$cap_appname.$$cap_root_domain
-            🔑 Admin: http://$$cap_appname.$$cap_root_domain/wp-admin
-            
-            📋 Configurazioni:
-            - Upload max: 128MB ✅
-            - Memory limit: 512MB ✅
-            - PHP 8.2 ottimizzato ✅
-            
-            💡 Se vedi errore database, aspetta 2 minuti e ricarica la pagina
-    displayName: WordPress Clienti (128MB Upload)
-    isOfficial: false
-    description: WordPress ottimizzato con upload 128MB, MySQL incluso, configurazioni sicurezza e performance preimpostate
-    documentation: Template creato per gestione automatizzata siti clienti con tutti i limiti risolti
+        start: WordPress installation starting
+        end: WordPress ready at http://$$cap_appname.$$cap_root_domain
+    displayName: WordPress Simple
+    description: Simple WordPress with MySQL
