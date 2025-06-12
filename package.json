@@ -1,0 +1,20 @@
+{
+  "name": "caprover-wordpress-clients",
+  "version": "1.0.0",
+  "description": "CapRover One-Click Apps for WordPress clients with 128MB upload",
+  "scripts": {
+    "build": "node build/build.js",
+    "dev": "npm run build && npx http-server dist",
+    "deploy": "npm run build && git add . && git commit -m 'Build and deploy' && git push"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lorenzodesiena/caprover-custom-templates"
+  },
+  "keywords": ["caprover", "wordpress", "one-click", "docker"],
+  "author": "Lorenzo De Siena",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
